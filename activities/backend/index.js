@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-    methods: ["*"],
+    methods: ["GET", "POST"],
   }),
 );
 app.use("/api/auth", authRoutes);
