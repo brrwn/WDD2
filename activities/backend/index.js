@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 
@@ -11,7 +12,14 @@ dotenv.config();
 //post - logic, if username = "bjorn", password = "123", success else failed
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: "*",
+    methods: ["*"],
+  }),
+);
 app.use("/api/auth", authRoutes);
+//http://localhost:3000/api/auth/register
 
 // app.get("/getName", (req, res) => {
 //   var name = "Bjorn";
