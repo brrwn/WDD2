@@ -3,9 +3,10 @@ import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import "./Login.css";
-import { useAuth } from "../contexts/AuthContext";
 import TextArea from "../components/TextArea";
 import slugify from "slugify";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Inventory = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +18,9 @@ const Inventory = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState();
   const [slug, setSlug] = useState("");
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,6 +47,12 @@ const Inventory = () => {
     });
     setSlug(generatedSlug);
   }, [formData]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user]); //mounting
 
   return (
     <Card title="Create Product">
