@@ -10,13 +10,24 @@ const productSchema = new mongoose.Schema(
       type: String,
       unique: true,
       lowercase: true,
-    }, // e.g., “lucky-me-pancit-canton”
+      sparse: true,
+    }, // e.g., "lucky-me-pancit-canton"
     description: {
       type: String,
     },
     price: {
       type: Number,
       required: true,
+      min: 0,
+    },
+    image: {
+      type: String,
+      default: "https://via.placeholder.com/300x300?text=Product",
+    },
+    countInStock: {
+      type: Number,
+      required: true,
+      default: 0,
       min: 0,
     },
   },

@@ -1,8 +1,9 @@
 .footer-container {
-  background-color: #1a1a1a;
+  background-color: var(--dark-red);
   color: #f4f4f4;
   padding: 4rem 2rem 1rem;
   margin-top: 4rem;
+  border-top: 3px solid var(--accent-gold);
 }
 
 .footer-content {
@@ -47,13 +48,13 @@
 }
 
 .link-group a {
-  color: #bbb;
+  color: var(--light-gold);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .link-group a:hover {
-  color: #fff;
+  color: var(--accent-gold);
 }
 
 .footer-bottom {

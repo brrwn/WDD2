@@ -15,11 +15,19 @@
   align-items: center;
   gap: 2rem;
 }
+.logo {
+  text-decoration: none;
+  cursor: pointer;
+}
 .logo h2 {
   margin: 0;
-  color: var(--primary-blue);
+  color: var(--primary-red);
   font-size: 1.75rem;
   font-weight: 700;
+  transition: color 0.3s ease;
+}
+.logo:hover h2 {
+  color: var(--hover-red);
 }
 .navigation {
   display: flex;
@@ -27,17 +35,79 @@
   align-items: center;
 }
 .navigation a {
+  position: relative;
   color: var(--text-dark);
   font-weight: 500;
   transition: color 0.3s ease;
   text-decoration: none;
 }
 .navigation a:hover {
-  color: var(--primary-blue);
+  color: var(--primary-red);
   text-decoration: none;
+}
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  background-color: var(--primary-red);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 .auth-section {
   display: flex;
   gap: 1rem;
   align-items: center;
+}
+.user-name {
+  color: var(--text-dark);
+  font-weight: 500;
+}
+.btn-login,
+.btn-logout {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-red);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+.btn-login:hover,
+.btn-logout:hover {
+  background-color: var(--hover-red);
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .logo h2 {
+    font-size: 1.5rem;
+  }
+  .navigation {
+    gap: 1rem;
+  }
+  .user-name {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    flex-wrap: wrap;
+  }
+  .navigation {
+    order: 3;
+    width: 100%;
+    justify-content: space-around;
+  }
 }
