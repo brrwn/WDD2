@@ -5,6 +5,7 @@ A full-stack e-commerce application built with React, Node.js/Express, and Mongo
 ## Project Features
 
 ### Customer Features
+
 - **User Authentication**: Sign up and log in using JWT (JSON Web Tokens)
 - **Product Browsing**: Homepage displaying products with images, prices, and descriptions
 - **Product Search/Filter**: Search bar to find products by name or category
@@ -13,6 +14,7 @@ A full-stack e-commerce application built with React, Node.js/Express, and Mongo
 - **Order Management**: View order history and status
 
 ### Admin Features
+
 - **Product Management**: Full CRUD operations (Create, Read, Update, Delete)
 - **Desktop Dashboard**: Manage inventory with an intuitive admin dashboard
 - **Stock Tracking**: Monitor product inventory levels
@@ -21,12 +23,14 @@ A full-stack e-commerce application built with React, Node.js/Express, and Mongo
 ## Tech Stack
 
 ### Frontend
+
 - React 19.2
 - React Router DOM 7.13
 - CSS3 (Custom styling with theme variables)
 - Context API (Authentication & Cart state management)
 
 ### Backend
+
 - Node.js with Express 5.2
 - MongoDB with Mongoose 9.3
 - JWT for authentication
@@ -36,6 +40,7 @@ A full-stack e-commerce application built with React, Node.js/Express, and Mongo
 ## Installation & Setup
 
 ### Prerequisites
+
 - Node.js (v18+)
 - npm or yarn
 - MongoDB (local or Atlas)
@@ -78,11 +83,13 @@ Frontend will run on `http://localhost:5173` (Vite default)
 ## API Routes
 
 ### Authentication Routes
+
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login user
 - `POST /api/auth/logout` - Logout user
 
 ### Product Routes
+
 - `GET /api/products` - Get all products (public)
 - `GET /api/products/:id` - Get single product (public)
 - `POST /api/products` - Create product (admin only)
@@ -90,6 +97,7 @@ Frontend will run on `http://localhost:5173` (Vite default)
 - `DELETE /api/products/:id` - Delete product (admin only)
 
 ### Order Routes
+
 - `POST /api/orders` - Create order (authenticated users)
 - `GET /api/orders/user/orders` - Get user's orders (authenticated)
 - `GET /api/orders` - Get all orders (admin only)
@@ -99,6 +107,7 @@ Frontend will run on `http://localhost:5173` (Vite default)
 ## Database Schema
 
 ### User Model
+
 ```javascript
 {
   name: String,
@@ -111,6 +120,7 @@ Frontend will run on `http://localhost:5173` (Vite default)
 ```
 
 ### Product Model
+
 ```javascript
 {
   name: String,
@@ -125,6 +135,7 @@ Frontend will run on `http://localhost:5173` (Vite default)
 ```
 
 ### Order Model
+
 ```javascript
 {
   user: ObjectId (User reference),
@@ -167,6 +178,7 @@ The application uses a dark red, white, and gold color scheme:
 ## Key Pages & Components
 
 ### Pages
+
 - **Landing** (`/`) - Product listing with search
 - **Auth** (`/auth`) - Login/Sign Up with tabs
 - **Cart** (`/cart`) - Shopping cart with quantity updates
@@ -174,6 +186,7 @@ The application uses a dark red, white, and gold color scheme:
 - **Admin Dashboard** (`/inventory`) - Product management (admin only)
 
 ### Components
+
 - **Header** - Navigation with cart badge
 - **Footer** - Site footer with links
 - **ProductCard** - Product display card
@@ -184,11 +197,13 @@ The application uses a dark red, white, and gold color scheme:
 ## State Management
 
 ### AuthContext
+
 - Manages user authentication state
 - Stores JWT token and user data in localStorage
 - Provides login/logout/register functions
 
 ### CartContext
+
 - Manages shopping cart state
 - Persists cart to localStorage
 - Provides add/remove/update cart functions
@@ -199,21 +214,22 @@ The application uses a dark red, white, and gold color scheme:
 2. ✅ **Phase 2**: Product API and frontend display
 3. ✅ **Phase 3**: JWT authentication system
 4. ✅ **Phase 4**: Shopping cart with Context API
-5. ✅ **Phase 5**: UI styling with dark red/white/gold theme
+5. ✅ **Phase 5**: UI styling with dark red/black/silver theme
 
 ## How to Use
 
 ### As a Customer
+
 1. Visit the homepage to browse products
-2. Search or filter products by name
-3. Click "Add to Cart" to add items
-4. View your cart to review items
-5. Click "Proceed to Checkout"
-6. Sign up or log in
-7. Enter shipping address
-8. Complete order with Cash on Delivery
+2. Sign up or log in
+3. Search or filter products by name
+4. Click "Add to Cart" to add items
+5. View your cart to review items
+6. Click "Proceed to Checkout"
+7. Complete order with Cash on Delivery
 
 ### As an Admin
+
 1. Create an admin account (set role in database or contact owner)
 2. Navigate to `/inventory`
 3. Use the dashboard to:
@@ -238,24 +254,29 @@ The application uses a dark red, white, and gold color scheme:
 ## Troubleshooting
 
 ### MongoDB Connection Issues
+
 - Check MONGO_URI in .env file
 - Ensure MongoDB is running
 - Verify connection string format
 
 ### JWT Token Errors
+
 - Clear browser localStorage
 - Check JWT_SECRET in .env matches backend
 - Re-login if token is expired
 
 ### CORS Errors
+
 - Ensure backend is running on port 3000
 - Check CORS configuration in index.js
 - Verify frontend is on localhost:5173
 
 ## License
+
 ISC
 
 ## Notes
+
 - Change default JWT_SECRET before deploying to production
 - Use environment variables for all sensitive data
 - Implement payment processing before going live
