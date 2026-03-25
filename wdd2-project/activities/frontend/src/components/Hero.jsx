@@ -2,9 +2,21 @@ import React from "react";
 import Button from "./Button";
 import "./Hero.css";
 
-export default function Hero({ title, description, buttontext, onButtonClick }) {
+export default function Hero({
+  title,
+  description,
+  buttontext,
+  onButtonClick,
+}) {
   const scrollToProducts = () => {
-    document.getElementById("products")?.scrollIntoView({ behavior: "smooth" });
+    const element = document.getElementById("products");
+    if (element) {
+      const headerOffset = 70;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+    }
   };
 
   const handleClick = () => {

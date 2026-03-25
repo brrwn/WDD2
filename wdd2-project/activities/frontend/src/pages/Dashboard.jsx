@@ -51,14 +51,6 @@ export default function Dashboard() {
             : "Discover our amazing collection of products"
         }
         buttontext={isAdmin ? "View Collection" : "Shop Now"}
-        onButtonClick={
-          isAdmin
-            ? () =>
-                document
-                  .getElementById("products")
-                  ?.scrollIntoView({ behavior: "smooth" })
-            : undefined
-        }
       />
 
       <div id="products" className="products-section">
