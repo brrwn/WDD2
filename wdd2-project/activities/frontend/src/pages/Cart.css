@@ -174,7 +174,7 @@
   color: white;
   border: none;
   padding: 1rem;
-  border-radius: 6px;
+  border-radius: 0;
   font-weight: 600;
   font-size: 0.9rem;
   text-transform: uppercase;
@@ -195,7 +195,7 @@
   border: 1px solid var(--border-light);
   background-color: transparent;
   color: var(--text-primary);
-  border-radius: 6px;
+  border-radius: 0;
   cursor: pointer;
   font-weight: 500;
   font-size: 0.9rem;

@@ -2,12 +2,19 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 import { useCart } from "../contexts/CartContext";
+import { useAuth } from "../contexts/AuthContext";
 import "./Cart.css";
 
 const Cart = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { cart, removeFromCart, updateQuantity, getTotalPrice, clearCart } =
     useCart();
+
+  if (!user) {
+    navigate("/auth");
+    return null;
+  }
 
   const totalPrice = getTotalPrice();
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -12,6 +12,7 @@ import "./ProductDetail.css";
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { addToCart } = useCart();
   const { user } = useAuth();
   const [product, setProduct] = useState(null);
@@ -50,6 +51,11 @@ const ProductDetail = () => {
   }, [id]);
 
   const handleAddToCart = () => {
+    if (!user) {
+      navigate("/auth", { state: { from: location.pathname } });
+      return;
+    }
+
     addToCart(product, quantity);
     setAddedToCart(true);
 

@@ -16,12 +16,6 @@ export const authService = {
       throw new Error(data.message || "Registration failed");
     }
 
-    // Store token and user in localStorage
-    if (data.token) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-    }
-
     return data;
   },
   async login(credentials) {
