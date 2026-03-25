@@ -27,12 +27,17 @@ export default function Header() {
             <nav className="navigation">
               <Link to="/">Home</Link>
               {user?.role !== "Admin" && (
-                <Link to="/cart">
-                  Cart
-                  {getTotalItems() > 0 && (
-                    <span className="cart-badge">{getTotalItems()}</span>
-                  )}
-                </Link>
+                <>
+                  <Link to="/watchlist">
+                    Watchlist
+                  </Link>
+                  <Link to="/cart">
+                    Cart
+                    {getTotalItems() > 0 && (
+                      <span className="cart-badge">{getTotalItems()}</span>
+                    )}
+                  </Link>
+                </>
               )}
               {user?.role === "Admin" && (
                 <Link to="/inventory">Collection</Link>

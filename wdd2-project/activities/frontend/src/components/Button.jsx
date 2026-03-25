@@ -1,7 +1,17 @@
 import "../components/Button.css";
-const Button = ({ children, loading, variant = "primary", ...props }) => {
+const Button = ({
+  children,
+  loading,
+  variant = "primary",
+  className = "",
+  ...props
+}) => {
   return (
-    <button className={`btn btn-${variant}`} disabled={loading} {...props}>
+    <button
+      className={`btn btn-${variant} ${className}`}
+      disabled={loading}
+      {...props}
+    >
       {loading ? (
         <>
           <span className="spinner">Loading...</span>
@@ -12,5 +22,4 @@ const Button = ({ children, loading, variant = "primary", ...props }) => {
     </button>
   );
 };
-
 export default Button;

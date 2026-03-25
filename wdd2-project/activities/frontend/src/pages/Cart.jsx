@@ -17,6 +17,8 @@ const Cart = () => {
   }
 
   const totalPrice = getTotalPrice();
+  const shippingFee = 50;
+  const finalTotal = totalPrice + shippingFee;
 
   const handleCheckout = () => {
     if (cart.length === 0) {
@@ -57,30 +59,35 @@ const Cart = () => {
                 </thead>
                 <tbody>
                   {cart.map((item) => (
-                    <tr key={item._id}>
+                    <tr key={item.productId}>
                       <td className="product-name">
                         <img src={item.image} alt={item.name} className="product-thumbnail" />
                         {item.name}
                       </td>
                       <td>₱{item.price.toFixed(2)}</td>
                       <td>
-                        <input
-                          type="number"
-                          min="1"
-                          max={item.countInStock}
-                          value={item.quantity}
-                          onChange={(e) =>
-                            updateQuantity(item._id, parseInt(e.target.value))
-                          }
-                          className="quantity-input"
-                        />
+                        <div className="quantity-selector">
+                          <button
+                            onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                            disabled={item.quantity <= 1}
+                          >
+                            −
+                          </button>
+                          <span>{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                            disabled={item.quantity >= item.countInStock}
+                          >
+                            +
+                          </button>
+                        </div>
                       </td>
                       <td className="item-total">
                         ₱{(item.price * item.quantity).toFixed(2)}
                       </td>
                       <td>
                         <button
-                          onClick={() => removeFromCart(item._id)}
+                          onClick={() => removeFromCart(item.productId)}
                           className="btn-remove"
                         >
                           Remove
@@ -101,15 +108,11 @@ const Cart = () => {
                 </div>
                 <div className="summary-row">
                   <span>Shipping:</span>
-                  <span>Free</span>
-                </div>
-                <div className="summary-row">
-                  <span>Tax:</span>
-                  <span>₱{(totalPrice * 0.1).toFixed(2)}</span>
+                  <span>₱{shippingFee.toFixed(2)}</span>
                 </div>
                 <div className="summary-total">
                   <span>Total:</span>
-                  <span>₱{(totalPrice * 1.1).toFixed(2)}</span>
+                  <span>₱{finalTotal.toFixed(2)}</span>
                 </div>
 
                 <Button onClick={handleCheckout} className="btn-checkout">

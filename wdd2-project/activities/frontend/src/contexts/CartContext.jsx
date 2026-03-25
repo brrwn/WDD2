@@ -1,50 +1,127 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { cartService } from "../services/cartService";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user, isAuthenticated } = useAuth();
 
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      try {
-        setCart(JSON.parse(savedCart));
-      } catch (error) {
-        console.error("Failed to load cart:", error);
-        setCart([]);
-      }
+  const loadCart = useCallback(async () => {
+    if (!isAuthenticated) {
+      setCart([]);
+      setLoading(false);
+      return;
     }
-    setLoading(false);
-  }, []);
 
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
-    if (!loading) {
-      localStorage.setItem("cart", JSON.stringify(cart));
+    try {
+      const dbCart = await cartService.getCart();
+      setCart(dbCart || []);
+    } catch (error) {
+      console.error("Failed to load cart:", error);
+      setCart([]);
+    } finally {
+      setLoading(false);
     }
-  }, [cart, loading]);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    loadCart();
+  }, [loadCart]);
+
+  const syncAddToCart = async (product, quantity = 1) => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    try {
+      const updatedCart = await cartService.addToCart(product._id, quantity);
+      setCart(updatedCart);
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+    }
+  };
+
+  const syncRemoveFromCart = async (productId) => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    try {
+      const updatedCart = await cartService.removeFromCart(productId);
+      setCart(updatedCart);
+    } catch (error) {
+      console.error("Failed to remove from cart:", error);
+    }
+  };
+
+  const syncUpdateQuantity = async (productId, quantity) => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    try {
+      const updatedCart = await cartService.updateCartItem(productId, quantity);
+      setCart(updatedCart);
+    } catch (error) {
+      console.error("Failed to update quantity:", error);
+    }
+  };
+
+  const syncClearCart = async () => {
+    if (!isAuthenticated) {
+      return;
+    }
+
+    try {
+      await cartService.clearCart();
+      setCart([]);
+    } catch (error) {
+      console.error("Failed to clear cart:", error);
+    }
+  };
 
   const addToCart = (product, quantity = 1) => {
     setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item._id === product._id);
+      const existingItem = prevCart.find(
+        (item) => item.productId === product._id
+      );
 
       if (existingItem) {
-        return prevCart.map((item) =>
-          item._id === product._id
+        const updatedCart = prevCart.map((item) =>
+          item.productId === product._id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
+        if (isAuthenticated) {
+          syncUpdateQuantity(product._id, existingItem.quantity + quantity);
+        }
+        return updatedCart;
       } else {
-        return [...prevCart, { ...product, quantity }];
+        const newItem = {
+          productId: product._id,
+          _id: product._id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          countInStock: product.countInStock,
+          quantity,
+        };
+        if (isAuthenticated) {
+          syncAddToCart(product, quantity);
+        }
+        return [...prevCart, newItem];
       }
     });
   };
 
   const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item._id !== productId));
+    setCart((prevCart) => prevCart.filter((item) => item.productId !== productId));
+    if (isAuthenticated) {
+      syncRemoveFromCart(productId);
+    }
   };
 
   const updateQuantity = (productId, quantity) => {
@@ -55,13 +132,19 @@ export const CartProvider = ({ children }) => {
 
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item._id === productId ? { ...item, quantity } : item
+        item.productId === productId ? { ...item, quantity } : item
       )
     );
+    if (isAuthenticated) {
+      syncUpdateQuantity(productId, quantity);
+    }
   };
 
   const clearCart = () => {
     setCart([]);
+    if (isAuthenticated) {
+      syncClearCart();
+    }
   };
 
   const getTotalPrice = () => {

@@ -3,7 +3,8 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
 import Cart from "./pages/Cart.jsx";
-import Checkout from "./pages/Checkout.jsx";
+import OrderSummary from "./pages/OrderSummary.jsx";
+import Watchlist from "./pages/Watchlist.jsx";
 import Header from "./components/Header.jsx";
 import "./App.css";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
@@ -23,7 +24,8 @@ function App() {
               <Route path="/auth" element={<Auth />} />
               <Route path="/inventory" element={<AdminDashboard />} />
               <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/checkout" element={<OrderSummary />} />
+              <Route path="/watchlist" element={<Watchlist />} />
             </Routes>
           </main>
         </CartProvider>

@@ -1,6 +1,15 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+const cartItemSchema = new mongoose.Schema({
+  productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+  quantity: { type: Number, required: true, min: 1 },
+  name: String,
+  price: Number,
+  image: String,
+  countInStock: Number,
+});
+
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -11,6 +20,7 @@ const userSchema = new mongoose.Schema(
       enum: ["User", "Admin"],
       default: "User",
     },
+    cart: [cartItemSchema],
   },
   { timestamps: true },
 );

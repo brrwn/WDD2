@@ -1,0 +1,143 @@
+.watchlist-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 24px;
+  min-height: calc(100vh - 200px);
+}
+
+.watchlist-container h1 {
+  margin-bottom: 2rem;
+  color: var(--text-primary);
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 2rem;
+}
+
+.empty-watchlist {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+}
+
+.empty-watchlist .btn {
+  width: fit-content;
+  max-width: 90vw;
+  margin: 0 auto;
+  display: block;
+}
+
+.empty-watchlist p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.watchlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.watchlist-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  transition: all 0.3s ease;
+}
+
+.watchlist-card:hover {
+  border-color: var(--border-light);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.watchlist-image {
+  width: 100%;
+  height: 345px;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+  cursor: pointer;
+}
+
+.watchlist-image img {
+  width: 231px;
+  height: 345px;
+  object-fit: cover;
+  margin: 0 auto;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.watchlist-card:hover .watchlist-image img {
+  transform: scale(1.05);
+}
+
+.watchlist-info {
+  padding: 1.5rem;
+}
+
+.watchlist-info h3 {
+  margin: 0 0 0.75rem 0;
+  color: var(--text-primary);
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.watchlist-price {
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0 0 0.5rem 0;
+}
+
+.watchlist-stock {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 1rem 0;
+}
+
+.watchlist-stock.in-stock {
+  color: #10b981;
+}
+
+.watchlist-stock.out-of-stock {
+  color: #ef4444;
+}
+
+.btn-remove-watchlist {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: transparent;
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-remove-watchlist:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .watchlist-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .watchlist-grid {
+    grid-template-columns: 1fr;
+  }
+}

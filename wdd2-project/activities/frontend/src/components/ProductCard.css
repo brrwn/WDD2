@@ -37,6 +37,45 @@
   transform: scale(1.05);
 }
 
+.btn-like {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 8px;
+}
+
+.btn-like svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-like:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+.btn-like.liked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.btn-like.liked:hover {
+  background-color: var(--primary-dark);
+}
+
 .product-content {
   padding: 1.5rem;
   display: flex;
@@ -60,4 +99,73 @@
   line-height: 1.5;
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+.product-card-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.product-price-stock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.product-price {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.product-stock {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.product-stock.in-stock {
+  color: #10b981;
+}
+
+.product-stock.out-of-stock {
+  color: #ef4444;
+}
+
+.btn-add-to-cart {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-add-to-cart:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(192, 192, 192, 0.3);
+}
+
+.btn-add-to-cart.added {
+  background-color: #10b981;
+}
+
+.btn-add-to-cart:disabled {
+  background-color: var(--border-subtle);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }

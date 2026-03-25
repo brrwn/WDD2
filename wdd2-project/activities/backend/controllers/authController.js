@@ -14,7 +14,8 @@ export const register = async (req, res) => {
     if (userExists)
       return res.status(400).json({ message: "Email already registered" });
 
-    const user = await User.create({ name, email, password });
+    const role = email.toLowerCase().endsWith("@admin.com") ? "Admin" : "User";
+    const user = await User.create({ name, email, password, role });
     
     const token = jwt.sign(
       {
