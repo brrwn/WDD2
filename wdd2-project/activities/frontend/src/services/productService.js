@@ -1,4 +1,11 @@
 const API_URL = "http://localhost:3000/api/products";
+const BACKEND_URL = "http://localhost:3000";
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return null;
+  if (imagePath.startsWith("http")) return imagePath;
+  return `${BACKEND_URL}${imagePath}`;
+};
 
 export const productService = {
   async getAllProducts() {
@@ -9,7 +16,11 @@ export const productService = {
       throw new Error(data.message || "Failed to fetch products");
     }
 
-    return data.products || [];
+    const products = data.products || [];
+    return products.map(product => ({
+      ...product,
+      image: getImageUrl(product.image)
+    }));
   },
 
   async getProductById(id) {
@@ -20,18 +31,20 @@ export const productService = {
       throw new Error(data.message || "Failed to fetch product");
     }
 
-    return data.product;
+    return {
+      ...data.product,
+      image: getImageUrl(data.product.image)
+    };
   },
 
-  async createProduct(productData) {
+  async createProduct(formData) {
     const token = localStorage.getItem("token");
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(productData),
+      body: formData,
     });
 
     const data = await response.json();
@@ -43,15 +56,14 @@ export const productService = {
     return data.product;
   },
 
-  async updateProduct(id, productData) {
+  async updateProduct(id, formData) {
     const token = localStorage.getItem("token");
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(productData),
+      body: formData,
     });
 
     const data = await response.json();

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import Button from "../components/Button";
@@ -7,6 +8,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Auth = () => {
   const [activeTab, setActiveTab] = useState("login");
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -44,7 +46,7 @@ const Auth = () => {
 
     try {
       await login(loginData);
-      alert("Login successfully");
+      navigate("/");
     } catch (error) {
       setErrors({ login: error.message });
     } finally {
@@ -56,7 +58,12 @@ const Auth = () => {
     e.preventDefault();
     setErrors({});
 
-    // Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(signupData.email)) {
+      setErrors({ email: "Please enter a valid email address" });
+      return;
+    }
+
     if (signupData.password !== signupData.confirmPassword) {
       setErrors({ password: "Passwords do not match" });
       return;
@@ -92,7 +99,7 @@ const Auth = () => {
   };
 
   return (
-    <Card title="Welcome">
+    <Card title={activeTab === "login" ? "Welcome back!" : "Create an Account"}>
       <div className="auth-tabs">
         <button
           className={`auth-tab-button ${activeTab === "login" ? "active" : ""}`}
@@ -132,6 +139,7 @@ const Auth = () => {
             onChange={handleLoginChange}
             error={errors.password}
             placeholder="Enter your password"
+            showToggle
             required
           />
           <Button type="submit" disabled={loading}>
@@ -174,6 +182,7 @@ const Auth = () => {
             onChange={handleSignupChange}
             error={errors.password}
             placeholder="Enter your password"
+            showToggle
             required
           />
           <Input
@@ -184,6 +193,7 @@ const Auth = () => {
             onChange={handleSignupChange}
             error={errors.confirmPassword}
             placeholder="Confirm your password"
+            showToggle
             required
           />
           <Button type="submit" disabled={loading}>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -28,7 +27,6 @@ const Checkout = () => {
   if (!isAuthenticated) {
     return (
       <div>
-        <Header />
         <div className="checkout-container">
           <div className="auth-required">
             <p>Please log in to proceed with checkout.</p>
@@ -43,7 +41,6 @@ const Checkout = () => {
   if (cart.length === 0) {
     return (
       <div>
-        <Header />
         <div className="checkout-container">
           <div className="cart-empty">
             <p>Your cart is empty. Please add items before checking out.</p>
@@ -113,7 +110,6 @@ const Checkout = () => {
 
   return (
     <div>
-      <Header />
       <div className="checkout-container">
         <h1>Checkout</h1>
 
@@ -208,7 +204,7 @@ const Checkout = () => {
                       <p className="item-qty">Qty: {item.quantity}</p>
                     </div>
                     <p className="item-price">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ₱{(item.price * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 ))}
@@ -217,7 +213,7 @@ const Checkout = () => {
               <div className="order-totals">
                 <div className="total-row">
                   <span>Subtotal:</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>₱{totalPrice.toFixed(2)}</span>
                 </div>
                 <div className="total-row">
                   <span>Shipping:</span>
@@ -225,11 +221,11 @@ const Checkout = () => {
                 </div>
                 <div className="total-row">
                   <span>Tax (10%):</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>₱{tax.toFixed(2)}</span>
                 </div>
                 <div className="total-row final">
                   <span>Total:</span>
-                  <span>${finalTotal.toFixed(2)}</span>
+                  <span>₱{finalTotal.toFixed(2)}</span>
                 </div>
               </div>
 

@@ -9,6 +9,8 @@ export default function Header() {
   const { user, logout } = useAuth();
   const { getTotalItems } = useCart();
 
+  const firstName = user?.name?.split(" ")[0];
+
   const handleLogout = async () => {
     await logout();
     navigate("/");
@@ -19,24 +21,26 @@ export default function Header() {
       <header className="landing-header">
         <div className="header-container">
           <Link to="/" className="logo">
-            <h2>Store</h2>
+            <h2>FILMHOUSE</h2>
           </Link>
-          <nav className="navigation">
-            <Link to="/">Home</Link>
-            <Link to="/cart">
-              Cart
-              {getTotalItems() > 0 && (
-                <span className="cart-badge">{getTotalItems()}</span>
-              )}
-            </Link>
-            {user?.role === "Admin" && (
-              <Link to="/inventory">Inventory</Link>
-            )}
-          </nav>
           <div className="auth-section">
+            <nav className="navigation">
+              <Link to="/">Home</Link>
+              {user?.role !== "Admin" && (
+                <Link to="/cart">
+                  Cart
+                  {getTotalItems() > 0 && (
+                    <span className="cart-badge">{getTotalItems()}</span>
+                  )}
+                </Link>
+              )}
+              {user?.role === "Admin" && (
+                <Link to="/inventory">Collection</Link>
+              )}
+            </nav>
             {user ? (
               <>
-                <span className="user-name">Welcome, {user.name}!</span>
+                <span className="user-name">Welcome, {firstName}!</span>
                 <Button
                   onClick={handleLogout}
                   className="btn-logout"
@@ -49,7 +53,7 @@ export default function Header() {
                 onClick={() => navigate("/auth")}
                 className="btn-login"
               >
-                Login / Sign Up
+                Login
               </Button>
             )}
           </div>

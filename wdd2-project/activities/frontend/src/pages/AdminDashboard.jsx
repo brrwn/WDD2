@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -8,6 +7,18 @@ import TextArea from "../components/TextArea";
 import { useAuth } from "../contexts/AuthContext";
 import { productService } from "../services/productService";
 import "./AdminDashboard.css";
+
+const truncateAtWord = (text, maxLength) => {
+  if (!text || text.length <= maxLength) return text;
+  const truncated = text.substring(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(" ");
+  if (lastSpace > 0) {
+    return truncated.substring(0, lastSpace) + "...";
+  }
+  return truncated + "...";
+};
+
+const DESCRIPTION_MAX = 80;
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -20,19 +31,18 @@ const AdminDashboard = () => {
     name: "",
     description: "",
     price: "",
-    image: "",
     countInStock: "",
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [errors, setErrors] = useState({});
 
-  // Check admin access
   useEffect(() => {
     if (!user || user.role !== "Admin") {
       navigate("/");
     }
   }, [user, navigate]);
 
-  // Fetch products
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -57,11 +67,26 @@ const AdminDashboard = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name) newErrors.name = "Product name is required";
+    if (!formData.description)
+      newErrors.description = "Description is required";
     if (!formData.price) newErrors.price = "Price is required";
-    if (!formData.countInStock) newErrors.countInStock = "Stock count is required";
+    if (!formData.countInStock)
+      newErrors.countInStock = "Stock count is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -73,11 +98,14 @@ const AdminDashboard = () => {
     if (!validateForm()) return;
 
     try {
-      const productData = {
-        ...formData,
-        price: parseFloat(formData.price),
-        countInStock: parseInt(formData.countInStock),
-      };
+      const productData = new FormData();
+      productData.append("name", formData.name);
+      productData.append("description", formData.description);
+      productData.append("price", parseFloat(formData.price));
+      productData.append("countInStock", parseInt(formData.countInStock));
+      if (imageFile) {
+        productData.append("image", imageFile);
+      }
 
       if (editingId) {
         await productService.updateProduct(editingId, productData);
@@ -99,9 +127,10 @@ const AdminDashboard = () => {
       name: product.name,
       description: product.description || "",
       price: product.price.toString(),
-      image: product.image || "",
       countInStock: product.countInStock.toString(),
     });
+    setImageFile(null);
+    setImagePreview(product.image || null);
     setEditingId(product._id);
     setShowForm(true);
   };
@@ -125,9 +154,10 @@ const AdminDashboard = () => {
       name: "",
       description: "",
       price: "",
-      image: "",
       countInStock: "",
     });
+    setImageFile(null);
+    setImagePreview(null);
     setEditingId(null);
     setShowForm(false);
     setErrors({});
@@ -135,11 +165,10 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <Header />
       <div className="admin-dashboard">
         <div className="dashboard-header">
-          <h1>Product Management Dashboard</h1>
-          <p>Manage your store's products</p>
+          <h1>Collection Management</h1>
+          <p>Manage the store's products</p>
         </div>
 
         <div className="dashboard-content">
@@ -157,7 +186,11 @@ const AdminDashboard = () => {
             {showForm && (
               <div className="form-section">
                 <h3>{editingId ? "Edit Product" : "Add New Product"}</h3>
-                <form onSubmit={handleSubmit} className="product-form">
+                <form
+                  onSubmit={handleSubmit}
+                  className="product-form"
+                  encType="multipart/form-data"
+                >
                   <Input
                     label="Product Name"
                     type="text"
@@ -172,10 +205,11 @@ const AdminDashboard = () => {
                     name="description"
                     value={formData.description}
                     onChange={handleInputChange}
+                    error={errors.description}
                     placeholder="Product description..."
                   />
                   <Input
-                    label="Price ($)"
+                    label="Price (₱)"
                     type="number"
                     name="price"
                     value={formData.price}
@@ -184,14 +218,23 @@ const AdminDashboard = () => {
                     step="0.01"
                     required
                   />
-                  <Input
-                    label="Image URL"
-                    type="url"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleInputChange}
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <div className="input-group">
+                    <label className="input-label">Image</label>
+                    <div className="image-upload">
+                      <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="image-input"
+                      />
+                      {imagePreview && (
+                        <div className="image-preview">
+                          <img src={imagePreview} alt="Preview" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                   <Input
                     label="Stock Count"
                     type="number"
@@ -243,7 +286,7 @@ const AdminDashboard = () => {
                             <span>{product.name}</span>
                           </div>
                         </td>
-                        <td>${product.price.toFixed(2)}</td>
+                        <td>₱{product.price.toFixed(2)}</td>
                         <td>
                           <span
                             className={`stock-badge ${
@@ -255,23 +298,27 @@ const AdminDashboard = () => {
                         </td>
                         <td>
                           <span className="description">
-                            {product.description?.substring(0, 50)}
-                            {product.description?.length > 50 ? "..." : ""}
+                            {truncateAtWord(
+                              product.description,
+                              DESCRIPTION_MAX,
+                            )}
                           </span>
                         </td>
                         <td>
-                          <button
-                            onClick={() => handleEdit(product)}
-                            className="btn-edit"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(product._id)}
-                            className="btn-delete"
-                          >
-                            Delete
-                          </button>
+                          <div className="action-buttons">
+                            <button
+                              onClick={() => handleEdit(product)}
+                              className="btn-edit"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleDelete(product._id)}
+                              className="btn-delete"
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

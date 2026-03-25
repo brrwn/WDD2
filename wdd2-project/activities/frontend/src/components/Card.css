@@ -3,22 +3,26 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: 2rem;
+  background-color: var(--bg-primary);
+  overflow: visible;
 }
 
 .card {
-  background: var(--background-white);
+  background: var(--bg-card);
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  padding: 2.5rem;
+  border: 1px solid var(--border-subtle);
+  padding: 3rem;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
+  overflow: visible;
 }
 
 .card-title {
-  color: var(--text-dark);
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
   text-align: center;
 }

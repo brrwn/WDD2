@@ -1,7 +1,6 @@
 import Product from "../models/Product.js";
 import slugify from "slugify";
 
-// Get all products
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -11,7 +10,6 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-// Get single product
 export const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -27,10 +25,10 @@ export const getProductById = async (req, res) => {
   }
 };
 
-// Create product (Admin only)
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, image, countInStock } = req.body;
+    const { name, description, price, countInStock } = req.body;
+    const image = req.file ? `/uploads/${req.file.filename}` : "";
 
     if (!name || !price) {
       return res.status(400).json({ message: "Name and price are required" });
@@ -54,11 +52,10 @@ export const createProduct = async (req, res) => {
   }
 };
 
-// Update product (Admin only)
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, price, image, countInStock } = req.body;
+    const { name, description, price, countInStock } = req.body;
 
     let product = await Product.findById(id);
     if (!product) {
@@ -71,7 +68,7 @@ export const updateProduct = async (req, res) => {
     }
     if (description !== undefined) product.description = description;
     if (price !== undefined) product.price = price;
-    if (image !== undefined) product.image = image;
+    if (req.file) product.image = `/uploads/${req.file.filename}`;
     if (countInStock !== undefined) product.countInStock = countInStock;
 
     product = await product.save();
@@ -84,7 +81,6 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-// Delete product (Admin only)
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;

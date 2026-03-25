@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Button from "../components/Button";
 import { useCart } from "../contexts/CartContext";
@@ -26,7 +25,6 @@ const Cart = () => {
 
   return (
     <div>
-      <Header />
       <div className="cart-container">
         <h1>Shopping Cart</h1>
 
@@ -57,7 +55,7 @@ const Cart = () => {
                         <img src={item.image} alt={item.name} className="product-thumbnail" />
                         {item.name}
                       </td>
-                      <td>${item.price.toFixed(2)}</td>
+                      <td>₱{item.price.toFixed(2)}</td>
                       <td>
                         <input
                           type="number"
@@ -71,7 +69,7 @@ const Cart = () => {
                         />
                       </td>
                       <td className="item-total">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ₱{(item.price * item.quantity).toFixed(2)}
                       </td>
                       <td>
                         <button
@@ -92,7 +90,7 @@ const Cart = () => {
                 <h2>Order Summary</h2>
                 <div className="summary-row">
                   <span>Subtotal:</span>
-                  <span>${totalPrice.toFixed(2)}</span>
+                  <span>₱{totalPrice.toFixed(2)}</span>
                 </div>
                 <div className="summary-row">
                   <span>Shipping:</span>
@@ -100,11 +98,11 @@ const Cart = () => {
                 </div>
                 <div className="summary-row">
                   <span>Tax:</span>
-                  <span>${(totalPrice * 0.1).toFixed(2)}</span>
+                  <span>₱{(totalPrice * 0.1).toFixed(2)}</span>
                 </div>
                 <div className="summary-total">
                   <span>Total:</span>
-                  <span>${(totalPrice * 1.1).toFixed(2)}</span>
+                  <span>₱{(totalPrice * 1.1).toFixed(2)}</span>
                 </div>
 
                 <Button onClick={handleCheckout} className="btn-checkout">
